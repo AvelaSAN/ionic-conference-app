@@ -3,35 +3,41 @@
     <ion-buttons *ngIf="!showSearchbar" slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-segment *ngIf="ios" [(ngModel)]="segment" (ionChange)="updateSchedule()">
-      <ion-segment-button value="all">
-        All
-      </ion-segment-button>
+    <ion-segment *ngIf="ios" [(ngModel)]="segment" (ionChange)="updatePedido()">
       <ion-segment-button value="favorites">
-        Favorites
+        En Curso
+      </ion-segment-button>
+      <ion-segment-button value="all">
+        Todo
       </ion-segment-button>
     </ion-segment>
-    <ion-title *ngIf="!ios && !showSearchbar">Schedule</ion-title>
-    <ion-searchbar *ngIf="showSearchbar" showCancelButton="always" [(ngModel)]="queryText" (ionChange)="updateSchedule()" (ionCancel)="showSearchbar = false" placeholder="Search"></ion-searchbar>
+    <ion-title *ngIf="!ios && !showSearchbar">Pedidos</ion-title>
+    <ion-searchbar *ngIf="showSearchbar" showCancelButton="always" [(ngModel)]="queryText" (ionChange)="updatePedido()" (ionCancel)="showSearchbar = false" placeholder="Search"></ion-searchbar>
     <ion-buttons slot="end">
       <ion-button *ngIf="!ios && !showSearchbar" (click)="showSearchbar = true">
         <ion-icon slot="icon-only" name="search"></ion-icon>
       </ion-button>
-      <ion-button *ngIf="!showSearchbar" (click)="presentFilter()">
+      <ion-button *ngIf="!showSearchbar && segment != 'favorites'" (click)="presentFilter()">
         <span *ngIf="ios">Filter</span>
         <span *ngIf="!ios">
           <ion-icon slot="icon-only" name="options"></ion-icon>
         </span>
       </ion-button>
+      <ion-button *ngIf="segment == 'favorites'" (click)="presentFilter()">
+        <span *ngIf="ios">Otro</span>
+        <span *ngIf="!ios">
+          <ion-icon slot="icon-only" name="otro"></ion-icon>
+        </span>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
   <ion-toolbar *ngIf="!ios">
-    <ion-segment [(ngModel)]="segment" (ionChange)="updateSchedule()">
-      <ion-segment-button value="all">
-        All
-      </ion-segment-button>
+    <ion-segment [(ngModel)]="segment" (ionChange)="updatePedido()">
       <ion-segment-button value="favorites">
-        Favorites
+        En Curso
+      </ion-segment-button>
+      <ion-segment-button value="all">
+        Todo
       </ion-segment-button>
     </ion-segment>
   </ion-toolbar>
@@ -40,14 +46,14 @@
 <ion-content fullscreen="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Schedule</ion-title>
+      <ion-title size="large">Pedidos</ion-title>
     </ion-toolbar>
     <ion-toolbar>
-      <ion-searchbar [(ngModel)]="queryText" (ionChange)="updateSchedule()" placeholder="Search"></ion-searchbar>
+      <ion-searchbar [(ngModel)]="queryText" (ionChange)="updatePedido()" placeholder="Search"></ion-searchbar>
     </ion-toolbar>
   </ion-header>
 
-  <ion-list #scheduleList [hidden]="shownSessions === 0">
+  <ion-list #PedidoList [hidden]="shownSessions === 0">
     <ion-item-group *ngFor="let group of groups" [hidden]="group.hide">
       <ion-item-divider sticky>
         <ion-label>

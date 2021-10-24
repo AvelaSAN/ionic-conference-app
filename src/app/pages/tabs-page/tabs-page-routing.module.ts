@@ -58,6 +58,15 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'producto',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../producto-list/producto-list.module').then(m => m.ProductoListPageModule)
+          }
+        ]
+      },
+      {
         path: '',
         redirectTo: '/app/tabs/schedule',
         pathMatch: 'full'

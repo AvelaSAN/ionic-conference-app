@@ -13,12 +13,12 @@ import { UserData } from '../../providers/user-data';
 })
 export class SchedulePage implements OnInit {
   // Gets a reference to the list element
-  @ViewChild('scheduleList', { static: true }) scheduleList: IonList;
+  @ViewChild('PedidoList', { static: true }) PedidoList: IonList;
 
   ios: boolean;
   dayIndex = 0;
   queryText = '';
-  segment = 'all';
+  segment = 'favorites';
   excludeTracks: any = [];
   shownSessions: any = [];
   groups: any = [];
@@ -38,15 +38,15 @@ export class SchedulePage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.updateSchedule();
+    this.updatePedido();
 
     this.ios = this.config.get('mode') === 'ios';
   }
 
-  updateSchedule() {
-    // Close any open sliding items when the schedule updates
-    if (this.scheduleList) {
-      this.scheduleList.closeSlidingItems();
+  updatePedido() {
+    // Close any open sliding items when the Pedido updates
+    if (this.PedidoList) {
+      this.PedidoList.closeSlidingItems();
     }
 
     this.confData.getTimeline(this.dayIndex, this.queryText, this.excludeTracks, this.segment).subscribe((data: any) => {
@@ -67,7 +67,7 @@ export class SchedulePage implements OnInit {
     const { data } = await modal.onWillDismiss();
     if (data) {
       this.excludeTracks = data;
-      this.updateSchedule();
+      this.updatePedido();
     }
   }
 
@@ -116,7 +116,7 @@ export class SchedulePage implements OnInit {
           handler: () => {
             // they want to remove this session from their favorites
             this.user.removeFavorite(sessionData.name);
-            this.updateSchedule();
+            this.updatePedido();
 
             // close the sliding item and hide the option buttons
             slidingItem.close();
